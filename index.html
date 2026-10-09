@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Welcome to AquaSaver </title>
+  <style>
+    body {
+      background-color: #87ceeb;
+      font-family: Arial, sans-serif;
+      padding-top: 30px;
+      text-align: center;
+    }
+    .login-box {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    input, button {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #2196f3;
+      color: white;
+      cursor: pointer;
+    }
+    #otpSection {
+      display: none;
+    }
+    #speak {
+      margin-top: 10px;
+      color: darkblue;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Google Translate -->
+  <div id="google_translate_element" style="position: absolute; top: 10px; right: 10px;"></div>
+
+  <div class="login-box">
+    <h2>AquaSaver Login</h2>
+
+    <!-- Option 1: Username Login -->
+    <input type="text" id="username" placeholder="Enter Username" />
+    <input type="password" id="password" placeholder="Enter Password" />
+    <button onclick="loginWithUsername()">Login with Username</button>
+
+    <hr>
+
+    <!-- Option 2: Phone OTP Login -->
+    <input type="text" id="phone" placeholder="Enter Mobile Number" />
+    <button onclick="sendOTP()">Send OTP</button>
+
+    <div id="otpSection">
+      <input type="text" id="otp" placeholder="Enter OTP" />
+      <button onclick="verifyOTP()">Verify & Login</button>
+    </div>
+
+    <div id="speak" onclick="speakText()">🔊 Speak Instructions</div>
+  </div>
+
+  <script>
+    async function loginWithUsername() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      if (!username || !password) {
+        alert("Please enter username and password");
+        return;
+      }
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/login', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({username: username, password: password})
+        });
+
+        const data = await response.json();
+        alert(data.message);
+
+        if(data.status === "success") {
+          window.location.href = "questions.html"; // go to questions page
+        }
+      } catch (error) {
+        alert("Error connecting to backend. Make sure it is running.");
+        console.error(error);
+      }
+    }
+
+    function sendOTP() {
+      const phone = document.getElementById("phone").value;
+      if (phone.length === 10) {
+        alert("OTP sent to " + phone + "\nDemo OTP is: 1234");
+        document.getElementById("otpSection").style.display = "block";
+      } else {
+        alert("Enter valid 10-digit mobile number");
+      }
+    }
+
+    function verifyOTP() {
+      const otp = document.getElementById("otp").value;
+      if (otp === "1234") {
+        window.location.href = "complaint.html";
+      } else {
+        alert("Invalid OTP. Try again.");
+      }
+    }
+
+    function speakText() {
+      const msg = new SpeechSynthesisUtterance("Welcome to AquaSaver. You can login using your username or mobile number and a demo OTP.");
+      window.speechSynthesis.speak(msg);
+    }
+
+    // Google Translate
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+    }
+  </script>
+
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
