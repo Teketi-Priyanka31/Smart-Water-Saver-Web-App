@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Water Saving Tips</title>
+  <style>
+    body {
+      background-color: #e0f7fa;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #00796b;
+    }
+    .translate-btns {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .translate-btns button {
+      margin: 5px;
+      padding: 10px 15px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .tip {
+      background-color: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px auto;
+      max-width: 600px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tip-icon {
+      font-size: 30px;
+    }
+    .tip-text {
+      flex-grow: 1;
+    }
+    .speak-btn {
+      background-color: #00796b;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .back-btn {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      background: #00796b;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>💧 Water Saving Tips</h2>
+
+  <div class="translate-btns">
+    <button onclick="setLanguage('en')">English</button>
+    <button onclick="setLanguage('te')">Telugu</button>
+    <button onclick="setLanguage('hi')">Hindi</button>
+  </div>
+
+  <div class="tip">
+    <div class="tip-icon">🚰</div>
+    <div class="tip-text" id="tip1"></div>
+    <button class="speak-btn" onclick="speak('tip1')">🔊</button>
+  </div>
+
+  <div class="tip">
+    <div class="tip-icon">🔧</div>
+    <div class="tip-text" id="tip2"></div>
+    <button class="speak-btn" onclick="speak('tip2')">🔊</button>
+  </div>
+
+  <div class="tip">
+    <div class="tip-icon">🪣</div>
+    <div class="tip-text" id="tip3"></div>
+    <button class="speak-btn" onclick="speak('tip3')">🔊</button>
+  </div>
+
+  <div class="tip">
+    <div class="tip-icon">♻</div>
+    <div class="tip-text" id="tip4"></div>
+    <button class="speak-btn" onclick="speak('tip4')">🔊</button>
+  </div>
+
+  <div class="tip">
+    <div class="tip-icon">🌧</div>
+    <div class="tip-text" id="tip5"></div>
+    <button class="speak-btn" onclick="speak('tip5')">🔊</button>
+  </div>
+
+  <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
+
+  <script>
+    const tips = {
+      en: [
+        "Turn off the tap while brushing your teeth.",
+        "Fix leaking taps and pipes immediately.",
+        "Use a bucket instead of a shower while bathing.",
+        "Reuse vegetable wash water for plants.",
+        "Collect rainwater for future use."
+      ],
+      te: [
+        "పళ్ళు బ్రష్ చేస్తున్నప్పుడు నీటిని ఆపండి.",
+        "లీకైన పైపులు వెంటనే మరమ్మతు చేయండి.",
+        "షవర్‌కు బదులుగా బకెట్ ఉపయోగించండి.",
+        "కూరగాయల నీటిని మొక్కలకు వాడండి.",
+        "వర్షపు నీటిని భద్రపరచండి."
+      ],
+      hi: [
+        "दाँत ब्रश करते समय नल बंद करें।",
+        "लीक हो रहे पाइप और नल तुरंत ठीक करें।",
+        "स्नान में बाल्टी का उपयोग करें, शॉवर नहीं।",
+        "सब्जी धोने का पानी पौधों के लिए उपयोग करें।",
+        "वर्षा जल को एकत्र करें और उपयोग करें।"
+      ]
+    };
+
+    function setLanguage(lang) {
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById("tip" + i).textContent = tips[lang][i - 1];
+      }
+    }
+
+    function speak(id) {
+      const msg = new SpeechSynthesisUtterance(document.getElementById(id).textContent);
+      speechSynthesis.speak(msg);
+    }
+
+    // Set default language
+    setLanguage('en');
+  </script>
+
+</body>
+</html>

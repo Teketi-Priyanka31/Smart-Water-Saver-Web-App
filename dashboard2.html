@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AquaSaver</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e0f7fa;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #00796b;
+      margin-bottom: 20px;
+    }
+
+    .chart-container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .tips, .image-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin: 30px auto;
+    }
+
+    .tip-box, .image-box {
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 240px;
+    }
+
+    .image-box {
+      flex-direction: column;
+      width: 140px;
+    }
+
+    .image-box img, .tip-box img {
+      width: 40px;
+      border-radius: 8px;
+    }
+
+    .speak-btn {
+      margin-top: 10px;
+      background: #00796b;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .resource-button button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Aqua Saver</h1>
+
+  <!-- Bar Chart -->
+  <div class="chart-container">
+    <h2 id="barTitle">Water Usage by Activity</h2>
+    <canvas id="barChart"></canvas>
+  </div>
+
+  <!-- Line Chart -->
+  <div class="chart-container">
+    <h2 id="lineTitle">Daily Water Usage Trend</h2>
+    <canvas id="lineChart"></canvas>
+  </div>
+
+  <!-- Pie Chart -->
+  <div class="chart-container">
+    <h2 id="pieTitle">Water Saved vs Wasted</h2>
+    <canvas id="pieChart"></canvas>
+  </div>
+
+  <!-- Tips -->
+  <div class="tips">
+    <div class="tip-box"><img src="images/tip1.png"><span id="tip1">Turn off taps while brushing.</span></div>
+    <div class="tip-box"><img src="images/tip2.png"><span id="tip2">Limit shower time to 5 minutes.</span></div>
+    <div class="tip-box"><img src="images/tip3.png"><span id="tip3">Fix pipe leaks immediately.</span></div>
+    <div class="tip-box"><img src="images/tip4.png"><span id="tip4">Use bucket instead of hose.</span></div>
+  </div>
+
+  <button class="speak-btn" onclick="speakTips()">🔊 Speak Tips</button>
+
+  <!-- Resources Button -->
+  <div class="resource-button">
+    <button onclick="window.location.href='resources.html'">🌐 Go to Water Resources</button>
+  </div>
+
+  <script>
+    // Make functions globally accessible
+    window.translate = function(lang) {
+      const t = translations[lang];
+      document.getElementById('barTitle').innerText = t.barTitle;
+      document.getElementById('lineTitle').innerText = t.lineTitle;
+      document.getElementById('pieTitle').innerText = t.pieTitle;
+      document.getElementById('tip1').innerText = t.tips[0];
+      document.getElementById('tip2').innerText = t.tips[1];
+      document.getElementById('tip3').innerText = t.tips[2];
+      document.getElementById('tip4').innerText = t.tips[3];
+      document.getElementById('labelTap').innerText = t.labels.tap;
+      document.getElementById('labelShower').innerText = t.labels.shower;
+      document.getElementById('labelReuse').innerText = t.labels.reuse;
+      document.getElementById('labelLeak').innerText = t.labels.leak;
+    }
+
+    window.speakTips = function () {
+      const tips = [
+        document.getElementById('tip1').innerText,
+        document.getElementById('tip2').innerText,
+        document.getElementById('tip3').innerText,
+        document.getElementById('tip4').innerText
+      ];
+      const msg = new SpeechSynthesisUtterance(tips.join('. '));
+      window.speechSynthesis.speak(msg);
+    }
+
+    const translations = {
+      en: {
+        barTitle: 'Water Usage by Activity',
+        lineTitle: 'Daily Water Usage Trend',
+        pieTitle: 'Water Saved vs Wasted',
+        tips: [
+          'Turn off taps while brushing.',
+          'Limit shower time to 5 minutes.',
+          'Fix pipe leaks immediately.',
+          'Use bucket instead of hose.'
+        ],
+        labels: {
+          tap: 'Tap',
+          shower: 'Shower',
+          reuse: 'Reuse',
+          leak: 'Leak'
+        }
+      },
+      hi: {
+        barTitle: 'गतिविधि के अनुसार पानी का उपयोग',
+        lineTitle: 'दैनिक पानी उपयोग प्रवृत्ति',
+        pieTitle: 'बचाया गया बनाम बर्बाद पानी',
+        tips: [
+          'ब्रश करते समय नल बंद करें।',
+          'शॉवर समय 5 मिनट तक सीमित करें।',
+          'पाइप लीक तुरंत ठीक करें।',
+          'पाइप के बजाय बाल्टी का उपयोग करें।'
+        ],
+        labels: {
+          tap: 'नल',
+          shower: 'शॉवर',
+          reuse: 'पुन: उपयोग',
+          leak: 'लीक'
+        }
+      },
+      te: {
+        barTitle: 'కార్యాచరణ ప్రకారం నీటి వినియోగం',
+        lineTitle: 'రోజువారీ నీటి వినియోగ ధోరణి',
+        pieTitle: 'సేవ్ చేసిన నీరు vs వృథా నీరు',
+        tips: [
+          'బ్రష్ చేస్తున్నప్పుడు తోటిని ఆపండి.',
+          'షవర్ సమయాన్ని 5 నిమిషాలకు పరిమితం చేయండి.',
+          'లీకులను వెంటనే సరిచేయండి.',
+          'హోస్ బదులు బకెట్ వాడండి.'
+        ],
+        labels: {
+          tap: 'తోటి',
+          shower: 'షవర్',
+          reuse: 'పునర్వినియోగం',
+          leak: 'లీక్'
+        }
+      }
+    };
+
+    // Chart.js Graphs
+    window.onload = () => {
+      new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Toilet', 'Shower', 'Washing', 'Drinking', 'Cooking'],
+          datasets: [{
+            label: 'Liters Used',
+            data: [30, 50, 40, 15, 20],
+            backgroundColor: '#00796b'
+          }]
+        }
+      });
+
+      new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'Water Usage (Liters)',
+            data: [180, 150, 160, 170, 140, 130, 120],
+            borderColor: '#00796b',
+            fill: false,
+            tension: 0.3
+          }]
+        }
+      });
+
+      new Chart(document.getElementById('pieChart'), {
+        type: 'pie',
+        data: {
+          labels: ['Saved', 'Wasted'],
+          datasets: [{
+            data: [75, 25],
+            backgroundColor: ['#4caf50', '#e53935']
+          }]
+        }
+      });
+    };
+  </script>
+</body>
+</html>

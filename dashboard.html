@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AquaSaver Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+  .next-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    padding: 12px 20px;
+    background-color: #00796b;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+  }
+    body {
+      background-color: #e0f7fa;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .summary {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    #chartContainer {
+      max-width: 600px;
+      margin: auto;
+    }
+    .image-warnings {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .image-warnings img {
+      width: 120px;
+      height: auto;
+    }
+    .tips {
+      background-color: #e1f5fe;
+      padding: 15px;
+      border-left: 5px solid #0288d1;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ✅ DEMO fallback data if localStorage is empty -->
+<script>
+  if (!localStorage.getItem("answers")) {
+    localStorage.setItem("answers", JSON.stringify([
+      { main: "Yes", sub: "No" },
+      { main: "No", sub: "No" },
+      { main: "Yes", sub: "Yes" },
+      { main: "No", sub: "Yes" },
+      { main: "Yes", sub: "Yes" },
+      { main: "No", sub: "No" }
+    ]));
+  }
+</script>
+
+<div class="container">
+  <h2>💧 AquaSaver Water Usage Dashboard</h2>
+
+  <div class="summary" id="usageMessage">Analyzing your water usage...</div>
+
+  <div id="chartContainer">
+    <canvas id="usageChart"></canvas>
+  </div>
+
+  <div class="image-warnings" id="imageWarnings">
+    <!-- Images shown here based on 'No' answers -->
+  </div>
+
+  <div class="tips">
+    <strong>Water Saving Tips:</strong>
+    <ul>
+      <li>Turn off the tap while brushing your teeth.</li>
+      <li>Use a bucket instead of a shower to bathe.</li>
+      <li>Fix leaking taps immediately to avoid waste.</li>
+      <li>Use leftover water for plants or cleaning.</li>
+      <li>Collect rainwater for household use.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  const data = JSON.parse(localStorage.getItem("answers"));
+
+  let totalYes = 0;
+  let totalNo = 0;
+
+  data.forEach((q) => {
+    if (q.main.toLowerCase() === "yes") totalYes++;
+    else totalNo++;
+    if (q.sub.toLowerCase() === "yes") totalYes++;
+    else totalNo++;
+  });
+
+  const usageMsg = document.getElementById("usageMessage");
+  const warningImgDiv = document.getElementById("imageWarnings");
+
+  if (totalNo <= 2) {
+    usageMsg.innerHTML = "✅ Great! You're using water efficiently!";
+  } else if (totalNo <= 5) {
+    usageMsg.innerHTML = "⚠ You're wasting some water. Try improving a few habits.";
+  } else {
+    usageMsg.innerHTML = "❌ You're wasting a lot of water. Please take action!";
+  }
+
+  // Online test images – you can replace these with your own local ones later
+  const noAnswerImages = {
+    0: "images/tap.png", // Brushing
+    1: "images/shower.png", // Bathing
+    2: "images/leak.png", // Leaks
+    3: "images/reuse.png"  // Rainwater
+  };
+
+  data.forEach((q, i) => {
+    if (q.main === "No" || q.sub === "No") {
+      const img = document.createElement("img");
+      img.src = noAnswerImages[i];
+      img.alt = "Warning";
+      warningImgDiv.appendChild(img);
+    }
+  });
+
+  // Bar chart
+  const ctx = document.getElementById("usageChart").getContext("2d");
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Yes Answers", "No Answers"],
+      datasets: [{
+        label: "Water Usage Analysis",
+        data: [totalYes, totalNo],
+        backgroundColor: ["#4caf50", "#f44336"]
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          precision: 0
+        }
+      }
+    }
+  });
+</script>
+<a href="resources.html" class="next-btn">Next → Water Resources</a>
+
+</body>
+</html>

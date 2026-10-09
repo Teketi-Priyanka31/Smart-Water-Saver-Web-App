@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Water Usage Questions</title>
+  <style>
+    body {
+      background-color: #87ceeb;
+      font-family: Arial, sans-serif;
+      padding: 10px;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 850px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    h2 {
+      text-align: center;
+    }
+    .question-block {
+      margin-bottom: 25px;
+      padding: 15px;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+    }
+    .main-question {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .sub-question {
+      font-size: 16px;
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+    .btn {
+      margin: 5px;
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: none;
+      background-color: #2196f3;
+      color: white;
+      cursor: pointer;
+    }
+    .btn.selected {
+      background-color: darkgreen;
+    }
+    .speak {
+      font-size: 20px;
+      cursor: pointer;
+      color: darkblue;
+      margin-left: 10px;
+    }
+    #next-btn {
+      display: block;
+      margin: 30px auto;
+      padding: 14px 30px;
+      font-size: 16px;
+      background-color: green;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Google Translate -->
+<div id="google_translate_element" style="position: absolute; top: 10px; right: 10px;"></div>
+
+<div class="container">
+  <h2>Water Usage Questionnaire</h2>
+
+  <div class="question-block">
+    <div class="main-question">🚰 Do you save water while brushing?
+      <span class="speak" onclick="speak('Do you save water while brushing?')">🔊</span><br/>
+      <button class="btn" onclick="selectAnswer(0, 'main', this)">Yes</button>
+      <button class="btn" onclick="selectAnswer(0, 'main', this)">No</button>
+    </div>
+    <div class="sub-question">➤ Do you turn off the tap while brushing?
+      <button class="btn" onclick="selectAnswer(0, 'sub', this)">Yes</button>
+      <button class="btn" onclick="selectAnswer(0, 'sub', this)">No</button>
+    </div>
+  </div>
+
+  <div class="question-block">
+    <div class="main-question">🚿 Do you reduce water during bathing?
+      <span class="speak" onclick="speak('Do you reduce water during bathing?')">🔊</span><br/>
+      <button class="btn" onclick="selectAnswer(1, 'main', this)">Yes</button>
+      <button class="btn" onclick="selectAnswer(1, 'main', this)">No</button>
+    </div>
+    <div class="sub-question">➤ Do you use a bucket instead of a shower?
+      <button class="btn" onclick="selectAnswer(1, 'sub', this)">Yes</button>
+      <button class="btn" onclick="selectAnswer(1, 'sub', this)">No</button>
+    </div>
+  </div>
+
+  <div class="question-block">
+    <div class="main-question">🛠 Do you prevent water leaks?
+      <span class="speak" onclick="speak('Do you prevent water leaks?')">🔊</span><br/>
+      <button class="btn" onclick="selectAnswer(2, 'main', this)">Yes</button>
+      <button class="btn" onclick="selectAnswer(2, 'main', this)">No</button>
+    </div>
+    <div class="sub-question">➤ Do you fix leaking taps quickly?
+      <button class="btn" onclick="selectAnswer(2, 'sub', this)">Yes</button>
+      <button class="btn" onclick="selectAnswer(2, 'sub', this)">No</button>
+    </div>
+  </div>
+
+  <div class="question-block">
+    <div class="main-question">🍽 Do you save water while washing dishes?
+      <span class="speak" onclick="speak('Do you save water while washing dishes?')">🔊</span><br/>
+      <button class="btn" onclick="selectAnswer(3, 'main', this)">Yes</button>
+      <button class="btn" onclick="selectAnswer(3, 'main', this)">No</button>
+    </div>
+    <div class="sub-question">➤ Do you turn off the tap while scrubbing?
+      <button class="btn" onclick="selectAnswer(3, 'sub', this)">Yes</button>
+      <button class="btn" onclick="selectAnswer(3, 'sub', this)">No</button>
+    </div>
+  </div>
+
+  <div class="question-block">
+    <div class="main-question">🔁 Do you reuse water at home?
+      <span class="speak" onclick="speak('Do you reuse water at home?')">🔊</span><br/>
+      <button class="btn" onclick="selectAnswer(4, 'main', this)">Yes</button>
+      <button class="btn" onclick="selectAnswer(4, 'main', this)">No</button>
+    </div>
+    <div class="sub-question">➤ Do you reuse washing water for plants?
+      <button class="btn" onclick="selectAnswer(4, 'sub', this)">Yes</button>
+      <button class="btn" onclick="selectAnswer(4, 'sub', this)">No</button>
+    </div>
+  </div>
+
+  <div class="question-block">
+    <div class="main-question">🌧 Do you use rainwater?
+      <span class="speak" onclick="speak('Do you use rainwater?')">🔊</span><br/>
+      <button class="btn" onclick="selectAnswer(5, 'main', this)">Yes</button>
+      <button class="btn" onclick="selectAnswer(5, 'main', this)">No</button>
+    </div>
+    <div class="sub-question">➤ Do you collect rainwater for use?
+      <button class="btn" onclick="selectAnswer(5, 'sub', this)">Yes</button>
+      <button class="btn" onclick="selectAnswer(5, 'sub', this)">No</button>
+    </div>
+  </div>
+
+  <button id="next-btn" onclick="goToDashboard()">Next → Dashboard</button>
+</div>
+
+<script>
+  // Stores answers for 6 questions
+  let answers = [
+    { main: "", sub: "" },
+    { main: "", sub: "" },
+    { main: "", sub: "" },
+    { main: "", sub: "" },
+    { main: "", sub: "" },
+    { main: "", sub: "" }
+  ];
+
+  function selectAnswer(index, type, btn) {
+    answers[index][type] = btn.innerText;
+
+    const buttons = btn.parentNode.querySelectorAll(".btn");
+    buttons.forEach(b => b.classList.remove("selected"));
+    btn.classList.add("selected");
+
+    console.log("Answers so far:", answers);
+  }
+
+  function speak(text) {
+    const msg = new SpeechSynthesisUtterance(text);
+    window.speechSynthesis.speak(msg);
+  }
+
+  function goToDashboard() {
+    localStorage.setItem("answers", JSON.stringify(answers));  // ✅ Save answers
+    window.location.href = "dashboard2.html";
+  }
+
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+  }
+</script>
+
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>
